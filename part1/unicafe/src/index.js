@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
-const Button = ({handleClick, text}) => (
-    <button onClick={handleClick}>{text}</button>
+
+const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
+
+
+const Statistics = ({feedback, count}) => (
+  <div> {feedback} {count}</div>
 )
 
-const Display = ({feedback, count}) => <div> {feedback} {count}</div>
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -24,7 +27,8 @@ const App = () => {
   
   // percentage of positive feedback
   let positivePercent = good / total * 100
-
+  // find a solution, to not display NaN at the 
+  // intial rendering of the app
   return (
     <div>
       <h1>give feedback</h1>
@@ -32,21 +36,15 @@ const App = () => {
       <Button handleClick={increaseNeutral} text="neutral" />
       <Button handleClick={increaseBad} text="bad" />
       <h1>statistics</h1>
-      <Display feedback="good" count={good} />
-      <Display feedback="neutral" count={neutral} />
-      <Display feedback="bad" count={bad} />
-      <Display feedback="all" count={total} />
-      <Display feedback="average" count={average} />
+      <Statistics feedback="good" count={good} />
+      <Statistics feedback="neutral" count={neutral} />
+      <Statistics feedback="bad" count={bad} /> 
+      <Statistics feedback="all" count={total} />
+      <Statistics feedback="average" count={average} />
       <div>positive {positivePercent} %</div>
     </div>
   )
 }
-
-
-
-
-
-
 
 
 

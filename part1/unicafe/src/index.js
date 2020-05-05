@@ -5,7 +5,16 @@ import ReactDOM from 'react-dom';
 const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
 
 const Statistic = ({text, value}) => {
-  return (<div> {text} {value} </div>)
+  return (
+  <tr>
+    <td>
+      {text}
+    </td>
+     <td>
+       {value}
+      </td>
+  </tr>
+  )
 }
 
 // displaying statistics into it's own component
@@ -28,12 +37,16 @@ const Statistics = ({good, neutral, bad}) => {
   
   return (
     <div>
-      <Statistic text="good" value={good} />
-      <Statistic text="neutral" value={neutral} />
-      <Statistic text="bad" value={bad} /> 
-      <Statistic text="all" value={total} />
-      <Statistic text="average" value={average} />
-      <Statistic text="positive" value={positivePercent + " %"} />
+      <table>
+        <tbody>
+        <Statistic text="good" value={good} />
+        <Statistic text="neutral" value={neutral} />
+        <Statistic text="bad" value={bad} /> 
+        <Statistic text="all" value={total} />
+        <Statistic text="average" value={average} />
+        <Statistic text="positive" value={positivePercent + " %"} />
+        </tbody>
+      </table>    
     </div>
   ) 
 }

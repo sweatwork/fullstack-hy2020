@@ -5,6 +5,13 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text} </button>
 );
 
+const Display = ({anecdote, voteCount}) => {
+if (voteCount != 0) {
+  return (<div>{anecdote} <br />has {voteCount} votes</div>)
+}
+  return (<div>Start voting, to find out!</div>)
+}
+
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0));
@@ -20,14 +27,22 @@ const App = ({ anecdotes }) => {
     setPoints(copy);
   };
 
+  // largest number of votes
+  let highestVotes = Math.max(...points)
+  // (position of, in array) anecdote with largest number votes
+  let largestAnecdote = points.indexOf(highestVotes);
+  
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <div>has {points[selected]} votes</div>
       <div>
         <Button handleClick={allPoints} text="vote" />
         <Button handleClick={nextAnecdote} text="next anecdote" />
       </div>
+      <h1>Anecdote with most votes</h1>
+      <Display anecdote={anecdotes[largestAnecdote]} voteCount={highestVotes}/>
     </div>
   );
 };

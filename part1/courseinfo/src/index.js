@@ -23,14 +23,14 @@ const Content = ({parts}) => {
   )
 }
 
-// const Total = (props) => {
-//   return (
-//     <p>
-//       Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}
-//     </p>
-//   )
+const Total = ({parts}) => {
+  return (
+    <b>
+      total of {parts[0].exercises + parts[1].exercises + parts[2].exercises + parts[3].exercises} exercises
+    </b>
+  )
 
-// }
+}
 
 const Course = ({course}) => {
   return (
@@ -62,6 +62,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
@@ -70,9 +75,9 @@ const App = () => {
     // returns as a fragment to keep the DOM clean 
     <>
       {/* <Header course={course} />
-      <Content course={course} />
-      <Total course={course} /> */}
+      <Content course={course} /> */}
       <Course course={course} />
+      <Total parts={course.parts} />
     </ >
   )
 }

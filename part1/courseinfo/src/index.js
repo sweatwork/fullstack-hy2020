@@ -1,57 +1,67 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = (props) => {
+const Header = ({name}) => {
   return (
     <h1>
-      {props.course.name}
+      {name}
     </h1>
+  )
+}
+
+const Part = ({part}) => {
+  return (
+    <p>
+      {part.name} {part.exercises}
+    </p>
+  )
+}
+
+const Content = ({parts}) => {
+  return (
+    parts.map(part => <Part key={part.id} part={part} />)
+  )
+}
+
+// const Total = (props) => {
+//   return (
+//     <p>
+//       Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}
+//     </p>
+//   )
+
+// }
+
+const Course = ({course}) => {
+  return (
+    <>
+    <Header name={course.name} />
+    <Content parts={course.parts} />
+    </ >
   )
   
 }
 
-const Part = (props) => {
-  return (
-    <p>
-      {props.part.name} {props.part.exercises}
-    </p>
-  )
-}
-const Content = (props) => {
-  return [
-      <Part key="A" part={props.course.parts[0]} />,
-      <Part key="B" part={props.course.parts[1]} />,
-      <Part key="C" part={props.course.parts[2]} />   
-  ]
-
-}
-
-const Total = (props) => {
-  return (
-    <p>
-      Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}
-    </p>
-  )
-
-}
-
-
 
 const App = () => {
   const course = {
+    id: 1,
     name: 'Half Stack application development',
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1
       },
       {
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2
       },
       {
         name: 'State of a component',
-        exercises: 14
+        exercises: 14,
+        id: 3
       }
     ]
   }
@@ -59,9 +69,10 @@ const App = () => {
   return (
     // returns as a fragment to keep the DOM clean 
     <>
-      <Header course={course} />
+      {/* <Header course={course} />
       <Content course={course} />
-      <Total course={course} />
+      <Total course={course} /> */}
+      <Course course={course} />
     </ >
   )
 }

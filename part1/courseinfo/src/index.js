@@ -24,12 +24,12 @@ const Content = ({parts}) => {
 }
 
 const Total = ({parts}) => {
+  const total = parts.reduce( (s, p) => s + p.exercises, 0)
   return (
     <b>
-      total of {parts[0].exercises + parts[1].exercises + parts[2].exercises + parts[3].exercises} exercises
+      total of {total} exercises
     </b>
   )
-
 }
 
 const Course = ({course}) => {
@@ -41,7 +41,6 @@ const Course = ({course}) => {
   )
   
 }
-
 
 const App = () => {
   const course = {

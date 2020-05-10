@@ -1,51 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = ({name}) => {
-  return (
-    <h1>
+const Header = ({name}) => (
+    <h2>
       {name}
-    </h1>
+    </h2>
   )
-}
 
-const Part = ({part}) => {
-  return (
+const Part = ({name, exercises}) => (
     <p>
-      {part.name} {part.exercises}
+      {name} {exercises}
     </p>
   )
-}
 
-const Content = ({parts}) => {
-  return (
-    parts.map(part => <Part key={part.id} part={part} />)
-  )
-}
-
-const Total = ({parts}) => {
-  const total = parts.reduce( (s, p) => s + p.exercises, 0)
-  return (
-    <b>
-      total of {total} exercises
-    </b>
-  )
-}
+const Content = ({parts}) => parts.map(part => (
+  <Part key={part.id} name={part.name} exercises={part.exercises} /> 
+  ))
 
 const Course = ({course}) => {
   return (
-    <>
+    <div key={course.id}>
     <Header name={course.name} />
     <Content parts={course.parts} />
-    </ >
-  )
-  
+    <Total parts={course.parts} />
+    </div>
+  ) 
 }
 
+const Total = ({parts}) => {
+    const total = parts.reduce( (s,p) => s + p.exercises, 0 )
+
+    return (
+      <b>
+        total of {total} exercises
+      </b>
+    )
+  }
+
 const App = () => {
-  const course = {
-    id: 1,
+  const courses = [
+  {
     name: 'Half Stack application development',
+    id: 1,
     parts: [
       {
         name: 'Fundamentals of React',
@@ -68,15 +64,30 @@ const App = () => {
         id: 4
       }
     ]
+  },
+  {
+    name: 'Node.js',
+    id: 2,
+    parts: [
+      {
+        name: 'Routing',
+        exercises: 3,
+        id: 1
+      },
+      {
+        name: 'Middlewares',
+        exercises: 7,
+        id: 2
+      }
+    ]
   }
+]
 
   return (
     // returns as a fragment to keep the DOM clean 
     <>
-      {/* <Header course={course} />
-      <Content course={course} /> */}
-      <Course course={course} />
-      <Total parts={course.parts} />
+    <h1>Web development curriculum</h1>
+    {courses.map(course => <Course key={course.id} course={course} /> )}
     </ >
   )
 }
@@ -85,5 +96,3 @@ ReactDOM.render(
     <App />,
   document.getElementById('root')
 )
-
-

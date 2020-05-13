@@ -1,5 +1,9 @@
-import React from 'react'
+import React from "react";
 
-const Name = ({person}) => <div>{person}</div>
+const Name = ({ person, number }) => (
+  <div>
+    {person} {number}
+  </div>
+);
 
-export default Name
+export default Name;

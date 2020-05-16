@@ -1,12 +1,9 @@
-import React from "react";
+import React from 'react'
 
-const Country = ({ filterCountries }) => {
-  const numberOfCountries = filterCountries.length;
-
-  if (numberOfCountries === 1) {
-    const country = filterCountries[numberOfCountries - 1];
-    return (
-      <>
+const Country = ({country}) => {
+    // console.log("inside Country", country)
+    return(
+        <>
         <h1>{country.name}</h1>
         <div>captial {country.capital}</div>
         <div>population {country.population}</div>
@@ -22,16 +19,7 @@ const Country = ({ filterCountries }) => {
           width="100px"
         ></img>
       </>
-    );
-  } else if (numberOfCountries > 1 && numberOfCountries <= 10) {
-    return filterCountries.map((country) => (
-      <div key={country.alpha2Code}> {country.name} </div>
-    ));
-  } else if (numberOfCountries > 10) {
-    return <div>Too many matches, specify another filter</div>;
-  } else {
-    return <div></div>;
-  }
-};
+    )
+}
 
 export default Country;

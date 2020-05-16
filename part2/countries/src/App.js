@@ -1,18 +1,40 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Country from "./components/Country";
 
+const App = () => {
+  const [searchCountry, setSearchCountry] = useState("");
+  const [countries, setCountries] = useState([]);
 
-const App = (props) => {
-    const [country, setCountry] = useState("") 
-    
-    const handleCountry = (event) => {
-        setCountry(event.target.value)
+  const handleSearchCountry = (event) => {
+    setSearchCountry(event.target.value);
+  };
+
+  useEffect(() => {
+    // console.log("effect");
+    axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
+      // console.log("promise fulfilled");
+      setCountries(response.data);
+    });
+  }, []);
+
+  const filterCountries = countries.filter((country) => {
+    if (searchCountry !== "") {
+      return country.name.toLowerCase().includes(searchCountry.toLowerCase());
     }
-    
-    return (
-        <div>
-            find countries<input value={country} onChange={handleCountry}/>
-        </div>    
-    )
-}
+  });
 
-export default App
+  return (
+    <>
+      <div>
+        find countries
+        <input value={searchCountry} onChange={handleSearchCountry} />
+      </div>
+      <div>
+        <Country filterCountries={filterCountries} />
+      </div>
+    </>
+  );
+};
+
+export default App;

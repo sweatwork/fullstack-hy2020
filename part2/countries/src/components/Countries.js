@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Country from "./Country";
 
 const Countries = ({ filterCountries, setSearchCountry }) => {
-
   if (filterCountries.length === 1) {
     return <Country country={filterCountries[0]} />;
   } else if (filterCountries.length > 1 && filterCountries.length <= 10) {

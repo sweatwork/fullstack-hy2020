@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     // console.log("effect");
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
-      // console.log("promise fulfilled");
+      // console.log(response.data);
       setCountries(response.data);
     });
   }, []);
@@ -22,7 +22,7 @@ const App = () => {
     if (searchCountry) {
       return country.name.toLowerCase().includes(searchCountry.toLowerCase());
     }
-    return false
+    return false;
   });
 
   return (
@@ -32,7 +32,10 @@ const App = () => {
         <input value={searchCountry} onChange={handleSearchCountry} />
       </div>
       <div>
-        <Countries filterCountries={filterCountries} setSearchCountry={setSearchCountry} />
+        <Countries
+          filterCountries={filterCountries}
+          setSearchCountry={setSearchCountry}
+        />
       </div>
     </>
   );

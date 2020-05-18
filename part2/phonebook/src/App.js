@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,47 +11,34 @@ const App = () => {
   const [searchName, setSearchName] = useState("");
   const [showAll, setShowAll] = useState(true);
 
-  const hook = () => {
-    const eventHandler = (response) => {
-      // console.log("promise fulfilled");
-      setPersons(response.data);
-    };
-
-    const promise = axios.get("http://localhost:3001/persons");
-    promise.then(eventHandler);
-  };
-  useEffect(hook, []);
-
-  console.log("render", persons.length, "persons");
+  useEffect(() => {
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
+  }, []);
 
   const addPerson = (event) => {
     event.preventDefault();
 
     const personObject = {
-      // id: newName,
       name: newName,
       number: newNumber,
     };
 
-    axios
-      .post("http://localhost:3001/persons", personObject)
-      .then((response) => {
-        console.log(response.data);
+    personService.create(personObject).then((returnedPerson) => {
+      const nameCopy = persons.find(
+        (person) => person.name === returnedPerson.name
+      );
 
-        const nameCopy = persons.find(
-          (person) => person.name === response.data.name
-        );
-        console.log("nameCopy value", nameCopy);
+      if (!nameCopy) {
+        setPersons(persons.concat(returnedPerson));
+      } else {
+        alert(`${returnedPerson.name} is already added to phonebook`);
+      }
 
-        if (!nameCopy) {
-          setPersons(persons.concat(response.data));
-        } else {
-          alert(`${response.data.name} is already added to phonebook`);
-        }
-
-        setNewName("");
-        setNewNumber("");
-      });
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   const personsToShow = showAll

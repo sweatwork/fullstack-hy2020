@@ -12,14 +12,13 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   const hook = () => {
-
     const eventHandler = (response) => {
-      console.log("promise fulfilled");
+      // console.log("promise fulfilled");
       setPersons(response.data);
     };
 
-    const promise = axios.get("http://localhost:3001/persons")
-    promise.then(eventHandler)
+    const promise = axios.get("http://localhost:3001/persons");
+    promise.then(eventHandler);
   };
   useEffect(hook, []);
 
@@ -29,21 +28,30 @@ const App = () => {
     event.preventDefault();
 
     const personObject = {
-      id: newName,
+      // id: newName,
       name: newName,
       number: newNumber,
     };
 
-    const nameCopy = persons.find((person) => person.name === newName);
+    axios
+      .post("http://localhost:3001/persons", personObject)
+      .then((response) => {
+        console.log(response.data);
 
-    if (nameCopy === undefined) {
-      setPersons(persons.concat(personObject));
-    } else {
-      alert(`${newName} is already added to phonebook`);
-    }
+        const nameCopy = persons.find(
+          (person) => person.name === response.data.name
+        );
+        console.log("nameCopy value", nameCopy);
 
-    setNewName("");
-    setNewNumber("");
+        if (!nameCopy) {
+          setPersons(persons.concat(response.data));
+        } else {
+          alert(`${response.data.name} is already added to phonebook`);
+        }
+
+        setNewName("");
+        setNewNumber("");
+      });
   };
 
   const personsToShow = showAll

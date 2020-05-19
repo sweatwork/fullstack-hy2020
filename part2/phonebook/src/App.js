@@ -13,7 +13,7 @@ const App = () => {
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
-      setPersons(initialPersons);
+      setPersons(persons.concat(initialPersons));
     });
   }, []);
 
@@ -25,20 +25,20 @@ const App = () => {
       number: newNumber,
     };
 
-    personService.create(personObject).then((returnedPerson) => {
-      const nameCopy = persons.find(
-        (person) => person.name === returnedPerson.name
-      );
+    const duplicatePerson = persons.find(
+      (person) => person.name === personObject.name
+    );
 
-      if (!nameCopy) {
-        setPersons(persons.concat(returnedPerson));
-      } else {
-        alert(`${returnedPerson.name} is already added to phonebook`);
-      }
+    if (!duplicatePerson) {
+      personService
+        .create(personObject)
+        .then((returnedPerson) => setPersons(persons.concat(returnedPerson)));
+    } else {
+      alert(`${personObject.name} is already added to phonebook`);
+    }
 
-      setNewName("");
-      setNewNumber("");
-    });
+    setNewName("");
+    setNewNumber("");
   };
 
   const personsToShow = showAll
@@ -46,14 +46,13 @@ const App = () => {
     : persons.filter((person) =>
         person.name.toLowerCase().includes(searchName.toLowerCase())
       );
-
   const handleNameChange = (event) => setNewName(event.target.value);
   const handleNumberChange = (event) => setNewNumber(event.target.value);
   const handleSearchName = (event) => {
     setSearchName(event.target.value);
     setShowAll(false);
   };
-
+  // console.log("personsToShow", personsToShow)
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,7 +66,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons
+        personsToShow={personsToShow}
+        persons={persons}
+        setPersons={setPersons}
+      />
     </div>
   );
 };

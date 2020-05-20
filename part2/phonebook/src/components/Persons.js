@@ -5,14 +5,20 @@ const Persons = ({ personsToShow, persons, setPersons }) => {
   const deletePerson = (name, id) => {
     const input = window.confirm(`Delete ${name} ?`);
     if (input) {
-      personService.del(id).then((response) => {
-        console.log(response);
-        setPersons(
-          persons.filter((person) => {
-            return person.id !== id;
-          })
-        );
-      });
+      personService
+        .del(id)
+        .then(response => {
+            if(response === 404) {
+              alert(`${name} not found.`)
+            } else if (response === 200) {
+              setPersons(
+                persons.filter((person) => {
+                  return person.id !== id;
+                })
+              )   
+            }
+          
+        })
     }
   };
 

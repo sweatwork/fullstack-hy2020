@@ -13,7 +13,11 @@ const App = () => {
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
-      setPersons(persons.concat(initialPersons));
+      if (initialPersons !== "Network Error") {
+        setPersons(persons.concat(initialPersons));
+      } else {
+        alert(`${initialPersons}`);
+      }
     });
   }, []);
 
@@ -34,13 +38,23 @@ const App = () => {
         .create(personObject)
         .then((returnedPerson) => setPersons(persons.concat(returnedPerson)));
     } else {
-      const userResponse = window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`);
-      if(userResponse) {
-        const person = persons.find((person) => person.id === duplicatePerson.id)
-        const changedPerson = {...person, number: personObject.number}
-        personService.update(changedPerson.id, changedPerson).then((response) => {
-          setPersons(persons.map((person) => person.id !== changedPerson.id ? person : response))
-        })
+      const userResponse = window.confirm(
+        `${personObject.name} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (userResponse) {
+        const person = persons.find(
+          (person) => person.id === duplicatePerson.id
+        );
+        const changedPerson = { ...person, number: personObject.number };
+        personService
+          .update(changedPerson.id, changedPerson)
+          .then((response) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== changedPerson.id ? person : response
+              )
+            );
+          });
       }
     }
 

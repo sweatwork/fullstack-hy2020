@@ -23,7 +23,7 @@ const Persons = ({ personsToShow, persons, setPersons }) => {
   };
 
   return personsToShow.map((person) => (
-    <div key={person.id}>
+    <div className="person" key={person.id}>
       {person.name} {person.number}
       <button onClick={() => deletePerson(person.name, person.id)}>
         delete

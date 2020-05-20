@@ -3,6 +3,7 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personService from "./services/persons";
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,11 +11,13 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchName, setSearchName] = useState("");
   const [showAll, setShowAll] = useState(true);
+  const [displayMessage, setDisplayMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       if (initialPersons !== "Network Error") {
         setPersons(persons.concat(initialPersons));
+
       } else {
         alert(`${initialPersons}`);
       }
@@ -36,7 +39,13 @@ const App = () => {
     if (!duplicatePerson) {
       personService
         .create(personObject)
-        .then((returnedPerson) => setPersons(persons.concat(returnedPerson)));
+        .then((returnedPerson) => {
+          setDisplayMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setDisplayMessage(null)
+          }, 2000)
+          setPersons(persons.concat(returnedPerson))
+        })
     } else {
       const userResponse = window.confirm(
         `${personObject.name} is already added to phonebook, replace the old number with a new one?`
@@ -49,6 +58,10 @@ const App = () => {
         personService
           .update(changedPerson.id, changedPerson)
           .then((response) => {
+            setDisplayMessage(`Updated ${changedPerson.name}`)
+            setTimeout(() => {
+              setDisplayMessage(null)
+            }, 2000)
             setPersons(
               persons.map((person) =>
                 person.id !== changedPerson.id ? person : response
@@ -77,6 +90,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={displayMessage}/>
       <Filter searchName={searchName} handleSearchName={handleSearchName} />
       <h2>add a new</h2>
       <PersonForm

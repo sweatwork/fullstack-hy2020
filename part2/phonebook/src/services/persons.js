@@ -22,7 +22,9 @@ const del = (id) => {
 
 const update = (id, personObject) => {
   const request = axios.put(`${baseUrl}/${id}`, personObject);
-  return request.then((response) => response.data);
+  return request
+    .then((response) => response.data)
+    .catch((error) => error.response.status);
 };
 
 export default { getAll, create, del, update };

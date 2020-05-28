@@ -17,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
-      if (initialPersons !== "Network Error") {
+      if (initialPersons !== "Not Found") {
         setPersons(initialPersons);
       } else {
         alert(`${initialPersons}`);
@@ -92,13 +92,14 @@ const App = () => {
     : persons.filter((person) =>
         person.name.toLowerCase().includes(searchName.toLowerCase())
       );
+
   const handleNameChange = (event) => setNewName(event.target.value);
   const handleNumberChange = (event) => setNewNumber(event.target.value);
   const handleSearchName = (event) => {
     setSearchName(event.target.value);
     setShowAll(false);
   };
-  // console.log("personsToShow", personsToShow)
+
   return (
     <div>
       <h2>Phonebook</h2>
